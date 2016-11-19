@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/movie-match.iml" filepath="$PROJECT_DIR$/.idea/modules/movie-match.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/movie-match_main.iml" filepath="$PROJECT_DIR$/.idea/modules/movie-match_main.iml" group="movie-match" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/movie-match_test.iml" filepath="$PROJECT_DIR$/.idea/modules/movie-match_test.iml" group="movie-match" />
+    </modules>
+  </component>
+</project>
