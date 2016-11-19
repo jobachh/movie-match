@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="MySQL - moviematch@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="moviematch">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="condor_coins_course"/>
+    <schema id="3" name="condor_default"/>
+    <schema id="4" name="condor_jacobs"/>
+    <schema id="5" name="gradmap"/>
+    <schema id="6" name="information_schema"/>
+    <schema id="7" name="maintenance"/>
+    <schema id="8" name="mysql"/>
+    <schema id="9" name="performance_schema"/>
+    <schema id="10" name="rgt"/>
+    <schema id="11" name="simulation"/>
+    <schema id="12" name="sys"/>
+    <schema id="13" name="test"/>
+    <schema id="14" name="xcolab"/>
+    <schema id="15" name="xcolab_fow"/>
+    <schema id="16" name="xcolab_full"/>
+    <schema id="17" name="xcolab_solve"/>
+    <schema id="18" name="xcolab_wh"/>
+    <table id="19" parent="1" name="genre"/>
+    <table id="20" parent="1" name="movie"/>
+    <table id="21" parent="1" name="movies_genres"/>
+    <table id="22" parent="1" name="recommendation"/>
+    <table id="23" parent="1" name="viewer"/>
+    <table id="24" parent="1" name="viewers_genres"/>
+    <table id="25" parent="1" name="viewers_movies"/>
+    <column id="26" parent="19" name="genre_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="27" parent="19" name="name">
+      <data-type>varchar(75)|0</data-type>
+    </column>
+    <key id="28" parent="19" name="PRIMARY">
+      <columns>genre_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="29" parent="20" name="movie_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="30" parent="20" name="name">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="31" parent="20" name="year">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="32" parent="20" name="description">
+      <data-type>text|0</data-type>
+    </column>
+    <column id="33" parent="20" name="image_url">
+      <data-type>varchar(512)|0</data-type>
+    </column>
+    <column id="34" parent="20" name="trailer_url">
+      <data-type>varchar(512)|0</data-type>
+    </column>
+    <column id="35" parent="20" name="rating">
+      <data-type>float|0</data-type>
+    </column>
+    <key id="36" parent="20" name="PRIMARY">
+      <columns>movie_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="37" parent="21" name="movie_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <column id="38" parent="21" name="genre_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <key id="39" parent="21" name="PRIMARY">
+      <columns>movie_id
+genre_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="40" parent="22" name="rec_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <key id="41" parent="22" name="PRIMARY">
+      <columns>rec_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="42" parent="23" name="rec_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <column id="43" parent="23" name="viewer_number">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="44" parent="23" name="name">
+      <data-type>varchar(75)|0</data-type>
+    </column>
+    <key id="45" parent="23" name="PRIMARY">
+      <columns>rec_id
+viewer_number</columns>
+      <primary>1</primary>
+    </key>
+    <column id="46" parent="24" name="rec_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <column id="47" parent="24" name="viewer_number">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="48" parent="24" name="genre_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <key id="49" parent="24" name="PRIMARY">
+      <columns>rec_id
+viewer_number
+genre_id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="50" parent="25" name="rec_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <column id="51" parent="25" name="viewer_number">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="52" parent="25" name="movie_id">
+      <mandatory>1</mandatory>
+      <data-type>bigint(11)|0</data-type>
+    </column>
+    <key id="53" parent="25" name="PRIMARY">
+      <columns>rec_id
+viewer_number
+movie_id</columns>
+      <primary>1</primary>
+    </key>
+  </database-model>
+</dataSource>
