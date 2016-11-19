@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebController {
 
     @RequestMapping("/")
-    public String index() {
-
-        return "index";
+    public String landingPage() {
+        return "landing";
     }
+
+    @RequestMapping("/match")
+    public String match() {
+        return "match";
+    }
+
 }
