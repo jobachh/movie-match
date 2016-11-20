@@ -6,8 +6,8 @@ var Movie = React.createClass({
     render: function() {
         let movie = this.props.movie;
         return <Col className="movie-element" lg={3}>
-                <a href="">
-                    <img src={movie.imageUrl} height={100} /> <br />
+                <a href="" className="movie-link">
+                    <img className="movie-img" src={movie.imageUrl} height={100} /> <br />
                     {movie.name}
                 </a>
             </Col>
@@ -21,10 +21,10 @@ var MovieList = React.createClass({
         var movies = this.props.movies;
         for (let i = 0; i < movies.length / 4; ++i) {
             rows.push(<Row className="movie-row"  key={i}>
-                <Movie movie={movies[i]} />
-                <Movie movie={movies[i + 1]} />
-                <Movie movie={movies[i + 2]} />
-                <Movie movie={movies[i + 3]} />
+                <Movie movie={movies[i * 4]} />
+                <Movie movie={movies[i * 4 + 1]} />
+                <Movie movie={movies[i * 4 + 2]} />
+                <Movie movie={movies[i * 4 + 3]} />
             </Row>);
         }
         return <div>
