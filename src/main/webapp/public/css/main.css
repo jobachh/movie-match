@@ -35,11 +35,15 @@ body {
     font-family: "Open Sans", "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.container{
+    width: auto !important;
+}
+
 .movie-img{
     margin-bottom: 5px;
 }
 
-movie-img-selected{
+.movie-img-selected{
     color: #d32345;
 }
 
@@ -62,6 +66,20 @@ movie-img-selected{
     margin-bottom: 2em;
 }
 
+.movie-heading{
+    color: #ffffff;
+    font-size: 33px;
+
+}
+
+.description{
+    color: #fff;
+    font-size: 14px;
+}
+
+.video{
+    padding-top: 20px;
+}
 
 .text-vertical-center {
     display: table-cell;
@@ -81,6 +99,13 @@ movie-img-selected{
 .btn-lg {
     border-radius: 26px;
     font-weight: 300;
+    background-color: #ff4a52;
+    border-color: #ff4a52;
+}
+
+.btn-lg:hover {
+    background-color: #00a1ff;
+    border-color: #00a1ff;
 }
 
 /* Custom Horizontal Rule */

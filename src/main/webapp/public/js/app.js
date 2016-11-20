@@ -36,6 +36,32 @@ var Result = React.createClass({
                         </Col>
                     </Row>
                     <Row>
+                        <Col lg={2} >
+                            <img src={movie.imageUrl} />
+                        </Col>
+                        <Col lg={10}>
+                            <Grid>
+                                <Row>
+                                    <Col lg={12}>
+                                        <h3 className="movie-heading">{movie.name}, {movie.year} (Rating: {movie.rating})</h3>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col lg={12}>
+                                        <div className="description">
+                                            {movie.description}
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Grid>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="video" lg={6} lgOffset={3}>
+                            <iframe width="560" height="315" src={movie.trailerUrl} frameborder="0" allowfullscreen></iframe>
+                        </Col>
+                    </Row>
+                    <Row>
                         <Col lg={6} lgOffset={3}>
                             <Button block={true}>Recommend another one</Button>
                         </Col>
