@@ -17,6 +17,12 @@ public class Viewer {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "viewers_movies",
+            joinColumns = {@JoinColumn(name = "rec_id"), @JoinColumn(name = "viewer_number")},
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private Set<Movie> movies;
+
     public ViewerKey getViewerKey() {
         return viewerKey;
     }
@@ -39,6 +45,14 @@ public class Viewer {
 
     public void setGenres(Set<Genre> genres) {
         this.genres = genres;
+    }
+
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
     }
 
     @Override
