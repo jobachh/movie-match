@@ -42,11 +42,19 @@ public class ViewersApiController {
         return viewer;
     }
 
-    @GetMapping ("{viewerNumber}/movies")
-    public Iterable<Movie> getMovies(@PathVariable long recId,
-                                  @PathVariable int viewerNumber,
-                                  @RequestBody Movie movie) {
+    @GetMapping ("{viewerNumber}/genreMovies")
+    public Iterable<Movie> getGenreMovies(@PathVariable long recId,
+                                     @PathVariable int viewerNumber) {
         Viewer viewer = viewerRepository.findOne(new ViewerKey(recId, viewerNumber));
+        //TODO: filter movies
+        return movieRepository.findAll();
+    }
+
+    @GetMapping ("{viewerNumber}/matchedMovies")
+    public Iterable<Movie> getMatchedMovies(@PathVariable long recId,
+                                     @PathVariable int viewerNumber) {
+        Viewer viewer = viewerRepository.findOne(new ViewerKey(recId, viewerNumber));
+        //TODO: filter movies
         return movieRepository.findAll();
     }
 }

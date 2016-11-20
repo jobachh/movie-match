@@ -1,6 +1,52 @@
-var Grid = ReactBootstrap.Grid;
-var Row = ReactBootstrap.Row;
-var Col = ReactBootstrap.Col;
+var {Grid, Row, Col, Alert, ButtonToolbar, Button} = ReactBootstrap;
+var { Router, Route, IndexRoute, IndexLink, Link } = ReactRouter;
+
+var Result = React.createClass({
+    loadResults: function() {
+        var self = this;
+        $.ajax({
+            url: "http://localhost:8080/api/recommendations/"
+                + this.props.recId + "/results"
+        }).then(function (data) {
+            self.setState({
+                movies: data
+            });
+        });
+    },
+
+    getInitialState: function() {
+        return {
+            resultNumber: 0,
+            movies: []
+        };
+    },
+
+    componentDidMount: function() {
+        this.loadResults();
+    },
+    render: function() {
+        let movies = this.state.movies;
+        if (movies.length > this.state.resultNumber) {
+            let movie = movies[this.state.resultNumber];
+            return <div>
+                <Grid>
+                    <Row>
+                        <Col lg={12}>
+                            <h2>How about watching {movie.name}?</h2>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col lg={6} lgOffset={3}>
+                            <Button block={true}>Recommend another one</Button>
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>
+        } else {
+            return <h2>Sorry, we have no more results for you :(</h2>
+        }
+    }
+});
 
 var Movie = React.createClass({
     render: function() {
@@ -36,25 +82,124 @@ var MovieList = React.createClass({
     }
 });
 
-var MOVIES = [
-    {name: "Brokeback Mountain", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTY5NTAzNTc1NF5BMl5BanBnXkFtZTYwNDY4MDc3._V1_UX182_CR0,0,182,268_AL_.jpg"},
-    {name: "Mission Impossible", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTc3NjI2MjU0Nl5BMl5BanBnXkFtZTgwNDk3ODYxMTE@._V1_UX182_CR0,0,182,268_AL_.jpg"},
-    {name: "Men in Black", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BNzA2MzI5Nzc0N15BMl5BanBnXkFtZTcwODE2NDU2MQ@@._V1_UY268_CR0,0,182,268_AL_.jpg"},
-    {name: "The Hobbit", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_UX182_CR0,0,182,268_AL_.jpg"},
-    {name: "Fantastic Beasts and Where to Find Them", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjMxOTM1OTI4MV5BMl5BanBnXkFtZTgwODE5OTYxMDI@._V1_UX182_CR0,0,182,268_AL_.jpg"},
-    {name: "Big Momma's House", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTcyMjdlYmUtNjQ1Zi00YTg3LTliNTgtZmNkOTRmYzEzYTMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"},
-    {name: "Austin Powers: The Spy Who Shagged Me", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMmFkZGQxN2YtODNlYS00MzM5LTk3NjQtNTUxYmQ1YzkwMDhmXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"},
-    {name: "Star Trek", imageUrl: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTY5MTIxNjkxOF5BMl5BanBnXkFtZTYwNTkyOTE2._V1_UY268_CR0,0,182,268_AL_.jpg"}
-];
+var GenreMovieList = React.createClass({
+    loadMovies: function() {
+        var self = this;
+        $.ajax({
+            url: "http://localhost:8080/api/recommendations/1/viewers/1/genreMovies"
+        }).then(function (data) {
+            self.setState({movies: data});
+        });
+    },
 
-var MatchApp = React.createClass({
+    getInitialState: function() {
+        return {movies: []};
+    },
+
+    componentDidMount: function() {
+        this.loadMovies();
+    },
+
     render: function() {
-        return <div id="page-wrapper">
-            <MovieList movies={MOVIES}/>
+        return <div>
+                <MovieList movies={this.state.movies} />
+                <Grid>
+                    <Row>
+                        <Col lg={6}>
+                            <Button block={true}>Refresh</Button>
+                        </Col>
+                        <Col lg={6}>
+                            <Link to="more-movies">
+                                <Button block={true} bsStyle="primary">Next</Button>
+                            </Link>
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>
+    }
+});
+
+var MatchedMovieList = React.createClass({
+    loadMovies: function() {
+        var self = this;
+        $.ajax({
+            url: "http://localhost:8080/api/recommendations/1/viewers/1/matchedMovies"
+        }).then(function (data) {
+            self.setState({movies: data});
+        });
+    },
+
+    getInitialState: function() {
+        return {movies: []};
+    },
+
+    componentDidMount: function() {
+        this.loadMovies();
+    },
+
+    render: function() {
+        return <div>
+            <MovieList movies={this.state.movies} />
+            <Grid>
+                <Row>
+                    <Col lg={6}>
+                        <Link to="results">
+                            <Button block={true} bsStyle="default">Get Results</Button>
+                        </Link>
+                    </Col>
+                    <Col lg={6}>
+                        <Link to="/">
+                            <Button block={true} bsStyle="primary">Add Viewer</Button>
+                        </Link>
+                    </Col>
+                </Row>
+            </Grid>
         </div>
     }
 });
 
+var MatchApp = React.createClass({
+    createRecommendation: function() {
+        var self = this;
+        $.post({
+            url: "http://localhost:8080/api/recommendations"
+        }).then(function (data) {
+            self.setState({
+                recId: data.recId
+            });
+        });
+    },
+
+    getInitialState: function() {
+        return {
+            recId: -1,
+            currentViewerNumber: 1
+        };
+    },
+
+    componentDidMount: function() {
+        this.createRecommendation();
+    },
+
+    render: function() {
+        if (this.state.recId > 0) {
+            var childrenWithProps = React.cloneElement(this.props.children, {recId: this.state.recId});
+            return <div id="page-wrapper">
+                {childrenWithProps}
+            </div>
+        } else {
+            return <Alert>Loading...</Alert>
+        }
+    }
+});
+
 ReactDOM.render(
-<MatchApp />, document.getElementById('root')
+    <Router>
+        <Route path="/" component={MatchApp}>
+            <IndexRoute component={GenreMovieList} />
+            <Route path="more-movies" component={MatchedMovieList} />
+            <Route path="results" component={Result} />
+        </Route>
+    </Router>
+    , document.getElementById('root')
 );

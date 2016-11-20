@@ -23,6 +23,15 @@ public class Viewer {
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private Set<Movie> movies;
 
+    public Viewer() {
+
+    }
+
+    public Viewer(ViewerKey viewerKey, String name) {
+        this.viewerKey = viewerKey;
+        this.name = name;
+    }
+
     public ViewerKey getViewerKey() {
         return viewerKey;
     }
