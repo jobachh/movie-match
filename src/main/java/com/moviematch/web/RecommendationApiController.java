@@ -35,7 +35,7 @@ public class RecommendationApiController {
         return recommendationRepository.findOne(recId);
     }
 
-    @GetMapping("{recId}")
+    @GetMapping("{recId}/results")
     public String getResults(@PathVariable long recId) {
         return "Brokeback Mountain";
     }
