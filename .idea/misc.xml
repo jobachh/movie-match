@@ -8,6 +8,9 @@
       <item index="2" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RequestMapping" />
     </list>
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="JSX" />
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
