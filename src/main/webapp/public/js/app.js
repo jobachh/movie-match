@@ -58,12 +58,15 @@ var Result = React.createClass({
                     </Row>
                     <Row>
                         <Col className="video" lg={6} lgOffset={3}>
-                            <iframe width="560" height="315" src={movie.trailerUrl} frameborder="0" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src={movie.trailerUrl} frameBorder="0" allowFullScreen></iframe>
                         </Col>
                     </Row>
                     <Row>
-                        <Col lg={6} lgOffset={3}>
-                            <Button block={true}>Recommend another one</Button>
+                        <Col lg={6}>
+                            <IndexLink to="/"><Button block={true}>Restart</Button></IndexLink>
+                        </Col>
+                        <Col lg={6}>
+                            <Button bsStyle="primary" block={true}>Recommend another one</Button>
                         </Col>
                     </Row>
                 </Grid>
@@ -75,10 +78,15 @@ var Result = React.createClass({
 });
 
 var Movie = React.createClass({
+    handleClick: function() {
+        this.props.onClick(this.props.movie.movieId);
+    },
     render: function() {
         let movie = this.props.movie;
-        return <Col className="movie-element" lg={3}>
-                <a href="" className="movie-link">
+        let modifierClass = this.props.selected ? 'movie-element--selected' : '';
+        let onClickFunc = this.handleClick;
+        return <Col className={'movie-element ' + modifierClass} lg={3}>
+                <a onClick={onClickFunc} className="movie-link">
                     <img className="movie-img" src={movie.imageUrl} height={100} /> <br />
                     {movie.name}
                 </a>
@@ -88,15 +96,46 @@ var Movie = React.createClass({
 
 //caveat: this.props.movies has to be divisible by 4!
 var MovieList = React.createClass({
+    getInitialState: function() {
+        return {selectedMovies: []};
+    },
+    toggleMovieSelect: function(movieId) {
+        let tmpSelectedMovies = this.state.selectedMovies;
+        if (tmpSelectedMovies.includes(movieId)) {
+            tmpSelectedMovies.splice(tmpSelectedMovies.indexOf(movieId), 1);
+        } else {
+            tmpSelectedMovies.push(movieId);
+        }
+        this.setState({selectedMovies: tmpSelectedMovies});
+    },
+    submit: function() {
+        let recId = this.props.recId;
+        let currentViewerNumber = this.props.currentViewerNumber;
+        $.post({
+            url: "http://localhost:8080/api/recommendations/" + recId
+            + "/viewers/" + currentViewerNumber + "/likedMovies",
+            data: JSON.stringify(this.state.selectedMovies),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
+        });
+    },
     render: function() {
         var rows = [];
         var movies = this.props.movies;
         for (let i = 0; i < movies.length / 4; ++i) {
-            rows.push(<Row className="movie-row"  key={i}>
-                <Movie movie={movies[i * 4]} />
-                <Movie movie={movies[i * 4 + 1]} />
-                <Movie movie={movies[i * 4 + 2]} />
-                <Movie movie={movies[i * 4 + 3]} />
+            rows.push(<Row className="movie-row" key={i}>
+                <Movie movie={movies[i * 4]}
+                       selected={this.state.selectedMovies.includes(this.props.movies[i * 4].movieId)}
+                       onClick={this.toggleMovieSelect} />
+                <Movie movie={movies[i * 4 + 1]}
+                       selected={this.state.selectedMovies.includes(this.props.movies[i * 4 + 1].movieId)}
+                       onClick={this.toggleMovieSelect} />
+                <Movie movie={movies[i * 4 + 2]}
+                       selected={this.state.selectedMovies.includes(this.props.movies[i * 4 + 2].movieId)}
+                       onClick={this.toggleMovieSelect} />
+                <Movie movie={movies[i * 4 + 3]}
+                       selected={this.state.selectedMovies.includes(this.props.movies[i * 4 + 3].movieId)}
+                       onClick={this.toggleMovieSelect} />
             </Row>);
         }
         return <div>
@@ -110,9 +149,12 @@ var MovieList = React.createClass({
 
 var GenreMovieList = React.createClass({
     loadMovies: function() {
-        var self = this;
+        let self = this;
+        let recId = this.props.recId;
+        let currentViewerNumber = this.props.currentViewerNumber;
         $.ajax({
-            url: "http://localhost:8080/api/recommendations/1/viewers/1/genreMovies"
+            url: "http://localhost:8080/api/recommendations/" + recId
+                    + "/viewers/" + currentViewerNumber + "/genreMovies"
         }).then(function (data) {
             self.setState({movies: data});
         });
@@ -128,14 +170,15 @@ var GenreMovieList = React.createClass({
 
     render: function() {
         return <div>
-                <MovieList movies={this.state.movies} />
+                <MovieList ref="movieList" movies={this.state.movies}
+                           recId={this.props.recId} currentViewerNumber={this.props.currentViewerNumber}/>
                 <Grid>
                     <Row>
                         <Col lg={6}>
                             <Button block={true}>Refresh</Button>
                         </Col>
                         <Col lg={6}>
-                            <Link to="more-movies">
+                            <Link to="more-movies" onClick={() =>this.refs.movieList.submit()}>
                                 <Button block={true} bsStyle="primary">Next</Button>
                             </Link>
                         </Col>
@@ -148,8 +191,11 @@ var GenreMovieList = React.createClass({
 var MatchedMovieList = React.createClass({
     loadMovies: function() {
         var self = this;
+        let recId = this.props.recId;
+        let currentViewerNumber = this.props.currentViewerNumber;
         $.ajax({
-            url: "http://localhost:8080/api/recommendations/1/viewers/1/matchedMovies"
+            url: "http://localhost:8080/api/recommendations/" + recId
+            + "/viewers/" + currentViewerNumber + "/matchedMovies"
         }).then(function (data) {
             self.setState({movies: data});
         });
@@ -165,16 +211,17 @@ var MatchedMovieList = React.createClass({
 
     render: function() {
         return <div>
-            <MovieList movies={this.state.movies} />
+            <MovieList ref="movieList" movies={this.state.movies}
+                       recId={this.props.recId} currentViewerNumber={this.props.currentViewerNumber}/>
             <Grid>
                 <Row>
                     <Col lg={6}>
-                        <Link to="results">
+                        <Link to="results" onClick={() =>this.refs.movieList.submit()}>
                             <Button block={true} bsStyle="default">Get Results</Button>
                         </Link>
                     </Col>
                     <Col lg={6}>
-                        <Link to="/">
+                        <Link to="/" onClick={() =>this.refs.movieList.submit()}>
                             <Button block={true} bsStyle="primary">Add Viewer</Button>
                         </Link>
                     </Col>
@@ -209,7 +256,11 @@ var MatchApp = React.createClass({
 
     render: function() {
         if (this.state.recId > 0) {
-            var childrenWithProps = React.cloneElement(this.props.children, {recId: this.state.recId});
+            var childrenWithProps = React.cloneElement(this.props.children,
+                {
+                    recId: this.state.recId,
+                    currentViewerNumber: this.state.currentViewerNumber
+                });
             return <div id="page-wrapper">
                 {childrenWithProps}
             </div>

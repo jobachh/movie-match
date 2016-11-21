@@ -43,12 +43,17 @@ body {
     margin-bottom: 5px;
 }
 
-.movie-img-selected{
-    color: #d32345;
+.movie-img {
+    margin-bottom: 5px;
+}
+
+.movie-element--selected {
+    background-color: #d32345;
 }
 
 .movie-link:hover{
     text-decoration: none;
+    cursor: pointer;
 }
 
 .background-color{

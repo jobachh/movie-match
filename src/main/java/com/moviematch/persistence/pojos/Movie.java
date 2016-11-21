@@ -30,6 +30,14 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
+    public long getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(long movieId) {
+        this.movieId = movieId;
+    }
+
     public String getName() {
         return name;
     }
@@ -76,6 +84,14 @@ public class Movie {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 
     @Override

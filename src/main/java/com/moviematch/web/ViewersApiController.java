@@ -9,6 +9,9 @@ import com.moviematch.persistence.repositories.ViewerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/recommendations/{recId}/viewers")
 public class ViewersApiController {
@@ -35,9 +38,10 @@ public class ViewersApiController {
     @PostMapping("{viewerNumber}/likedMovies")
     public Viewer postLikedMovies(@PathVariable long recId,
                                   @PathVariable int viewerNumber,
-                                  @RequestBody Movie movie) {
+                                  @RequestBody List<Long> movieIds) {
         Viewer viewer = viewerRepository.findOne(new ViewerKey(recId, viewerNumber));
-        viewer.getMovies().add(movie);
+        viewer.getMovies().addAll(movieIds.stream()
+                .map(movieRepository::findOne).collect(Collectors.toList()));
         viewerRepository.save(viewer);
         return viewer;
     }
@@ -46,7 +50,6 @@ public class ViewersApiController {
     public Iterable<Movie> getGenreMovies(@PathVariable long recId,
                                      @PathVariable int viewerNumber) {
         Viewer viewer = viewerRepository.findOne(new ViewerKey(recId, viewerNumber));
-        //TODO: filter movies
         return movieRepository.findAll();
     }
 
